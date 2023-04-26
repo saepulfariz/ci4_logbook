@@ -1,0 +1,1 @@
+<small class='text-danger pl-3'><?= esc($error) ?></small>

@@ -60,6 +60,7 @@ $routes->group('', ['filter' => 'authFilter'], function ($routes) {
     $routes->post('gantipass', 'User::prosesGantiPass');
     $routes->get('user/active/(:num)/(:num)', 'User::active/$1/$2');
     $routes->resource('user');
+    $routes->resource('kategori');
 });
 /*
  * --------------------------------------------------------------------

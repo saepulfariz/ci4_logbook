@@ -20,8 +20,10 @@ class KategoriModel extends Model
         'is_pleace',
         'cid',
         'uid',
+        'did',
         'created_at',
         'updated_at',
+        'deleted_at',
     ];
 
     // Dates
@@ -66,7 +68,10 @@ class KategoriModel extends Model
 
     protected function beforeDelete(array $data)
     {
-        $data['data']['did'] = session()->get('id_user');
-        return $data;
+        $dataUpdate = [
+            'did' => session()->get('id_user')
+        ];
+        $this->db->table($this->table)->where($this->primaryKey, $data['id'][0])->update($dataUpdate);
+        return true;
     }
 }

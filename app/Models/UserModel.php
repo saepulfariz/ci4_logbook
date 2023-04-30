@@ -20,6 +20,7 @@ class UserModel extends Model
         'password',
         'npm',
         'nama_lengkap',
+        'gambar',
         'id_role',
         'id_kategori',
         'tempat_mbkm',

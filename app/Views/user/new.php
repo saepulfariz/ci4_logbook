@@ -76,7 +76,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="tempat_mbkm">Pleace MBKM</label>
+                        <label for="tempat_mbkm">Pleace / Title MBKM</label>
                         <input type="text" class="form-control <?= (validation_show_error('tempat_mbkm')) ? 'border-danger text-danger' : '' ?>" name="tempat_mbkm" id="tempat_mbkm" value="<?= old('tempat_mbkm'); ?>">
                         <?= validation_show_error('tempat_mbkm') ?>
                     </div>

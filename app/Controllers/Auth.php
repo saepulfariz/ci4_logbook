@@ -172,6 +172,7 @@ class Auth extends BaseController
             'id_kategori' => htmlspecialchars($this->request->getVar('id_kategori'), true),
             'tempat_mbkm' => htmlspecialchars($this->request->getVar('tempat_mbkm'), true),
             'password' => password_hash(htmlspecialchars($this->request->getVar('password'), true), PASSWORD_DEFAULT),
+            'gambar' => 'default.jpg',
             'cid' => 1,
             'uid' => 1,
             'is_active' => 1,

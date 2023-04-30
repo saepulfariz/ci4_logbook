@@ -4,25 +4,21 @@
 
 
 
-<?php
 
-use App\Models\UserModel;
-
-$modeluser = new UserModel();
-$dataUser = $modeluser->join('tb_role', 'tb_role.id_role = tb_user.id_role')->find(session()->get('id_role'));
-
-?>
 
 <div class="card mb-3" style="max-width: 540px;">
     <div class="row no-gutters">
         <div class="col-md-4">
-            <img class="card-img" src="<?= base_url(); ?>assets/img/undraw_profile.svg" alt="User">
+            <img class="card-img" src="<?= base_url(); ?>assets/img/profile/<?= $user['gambar']; ?>" alt="User">
         </div>
         <div class="col-md-8">
             <div class="card-body">
-                <h5 class="card-title"><?= $dataUser['username']; ?>(<?= $dataUser['nama_role']; ?>)</h5>
-                <p class="card-text"><?= $dataUser['email']; ?></p>
-                <p class="card-text"><small class="text-muted">Member since <?= date('d F Y', strtotime($dataUser['created_at'])); ?></small></p>
+                <p class="card-text mb-1">Username : <?= $user['username']; ?>(<?= $user['nama_role']; ?>)</p>
+                <p class="card-text mb-1">NPM : <?= $user['npm']; ?></p>
+                <p class="card-text mb-1">Email : <?= $user['email']; ?></p>
+                <p class="card-text mb-1">MBKM : <?= $user['nama_kategori']; ?></p>
+                <p class="card-text mb-1">Pleace/Title : <?= $user['tempat_mbkm']; ?></p>
+                <p class="card-text mb-1"><small class="text-muted">Member since <?= date('d F Y', strtotime($user['created_at'])); ?></small></p>
             </div>
         </div>
     </div>

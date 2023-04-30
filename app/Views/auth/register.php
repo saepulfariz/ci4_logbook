@@ -1,5 +1,6 @@
 <?= $this->extend('auth/index') ?>
 
+
 <?= $this->section('content') ?>
 
 <style>
@@ -80,7 +81,7 @@
                                     <?= validation_show_error('id_kategori', 'my_single'); ?>
                                 </div>
                                 <div class="col-sm-6">
-                                    <input type="text" name="tempat_mbkm" class="form-control form-control-user d-none" id="tempat_mbkm" placeholder="Pleace MBKM">
+                                    <input type="text" name="tempat_mbkm" class="form-control form-control-user" id="tempat_mbkm" placeholder="Pleace / Title MBKM">
                                 </div>
                             </div>
 
@@ -101,29 +102,30 @@
             </div>
         </div>
     </div>
-    <?= $this->endSection('content') ?>
+</div>
+<?= $this->endSection('content') ?>
 
-    <?= $this->section('script') ?>
-    <script>
-        $('#id_kategori').on('change', function() {
-            var idKategori = $(this).val();
-            $.ajax({
-                url: '<?= base_url('ajax/kategori'); ?>',
-                method: 'GET', // POST
-                data: {
-                    id_kategori: idKategori
-                },
-                dataType: 'json', // json
-                success: function(data) {
-                    console.log(data);
-                    if (data.is_pleace == 1) {
-                        $('#tempat_mbkm').removeClass('d-none');
-                    } else {
-                        $('#tempat_mbkm').addClass('d-none');
-                    }
-                }
-            });
+<?= $this->section('script') ?>
+<script>
+    // $('#id_kategori').on('change', function() {
+    //     var idKategori = $(this).val();
+    //     $.ajax({
+    //         url: '<?= base_url('ajax/kategori'); ?>',
+    //         method: 'GET', // POST
+    //         data: {
+    //             id_kategori: idKategori
+    //         },
+    //         dataType: 'json', // json
+    //         success: function(data) {
+    //             console.log(data);
+    //             if (data.is_pleace == 1) {
+    //                 $('#tempat_mbkm').removeClass('d-none');
+    //             } else {
+    //                 $('#tempat_mbkm').addClass('d-none');
+    //             }
+    //         }
+    //     });
 
-        })
-    </script>
-    <?= $this->endSection('script') ?>
+    // })
+</script>
+<?= $this->endSection('script') ?>

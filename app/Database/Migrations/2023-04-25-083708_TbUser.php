@@ -35,6 +35,10 @@ class TbUser extends Migration
                 'type'       => 'VARCHAR',
                 'constraint' => '128',
             ],
+            'gambar' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '256',
+            ],
             'id_role' => [
                 'type'           => 'INT',
                 'constraint'     => 11,

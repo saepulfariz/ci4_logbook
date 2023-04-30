@@ -130,6 +130,7 @@ class User extends BaseController
             'id_kategori' => htmlspecialchars($this->request->getVar('id_kategori'), true),
             'tempat_mbkm' => htmlspecialchars($this->request->getVar('tempat_mbkm'), true),
             'password' => password_hash(htmlspecialchars($this->request->getVar('password'), true), PASSWORD_DEFAULT),
+            'gambar' => 'default.jpg',
             'is_active' => 1,
             'id_role' => htmlspecialchars($this->request->getVar('id_role'), true),
         ];
@@ -397,9 +398,105 @@ class User extends BaseController
     public function profile()
     {
         $data = [
-            'title' => 'My Profile'
+            'title' => 'My Profile',
+            'user' => $this->modeluser->join('tb_logbook_kategori', 'tb_logbook_kategori.id_kategori = tb_user.id_kategori')->join('tb_role', 'tb_role.id_role = tb_user.id_role')->find(session()->get('id_user'))
         ];
 
         return view('user/profile', $data);
+    }
+
+
+    public function editProfile()
+    {
+        $data = [
+            'title' => 'Edit Profile',
+            'kategori' => $this->modelkategori->findAll(),
+            'user' => $this->modeluser->join('tb_role', 'tb_role.id_role = tb_user.id_role')->find(session()->get('id_user'))
+        ];
+
+        return view('user/profile_edit', $data);
+    }
+
+
+    public function updateProfile()
+    {
+        $id = session()->get('id_user');
+        $rules = [
+            'nama_lengkap' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must choose a Full Name.',
+                ],
+            ],
+
+            'id_kategori' => [
+                'rules'  => 'required',
+                'errors' => [
+                    'required' => 'You must choose a Categori',
+                ],
+            ],
+            'email' => [
+                'rules'  => 'required|valid_email',
+                'errors' => [
+                    'required' => 'You must choose a Email',
+                    'valid_email' => 'Please check the Email field. It does not appear to be valid.',
+                    'is_unique' => 'Already register.',
+                ],
+            ],
+        ];
+
+
+        $dataOld = $this->modeluser->find($id);
+
+        if ($dataOld['email'] != $this->request->getVar('email')) {
+            dd('gak sama');
+            $rules['email'] = [
+                'rules'  => 'required|valid_email|is_unique[tb_user.email]',
+                'errors' => [
+                    'required' => 'You must choose a Email',
+                    'valid_email' => 'Please check the Email field. It does not appear to be valid.',
+                    'is_unique' => 'Already register.',
+                ],
+            ];
+        }
+
+
+        $dataGambar = $this->request->getFile('gambar');
+        if ($dataGambar->getName() != '') {
+            $rules['gambar'] = [
+                'rules'  => 'is_image[gambar]|mime_in[gambar,image/jpg,image/jpeg,image/gif,image/png]|max_size[gambar,2048]',
+                'errors' => [
+                    'mime_in' => 'File Extention Harus Berupa jpg,jpeg,gif,png',
+                    'max_size' => 'Ukuran File Maksimal 2 MB'
+                ],
+            ];
+        }
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput();
+        };
+
+
+        $data = [
+            'nama_lengkap' => htmlspecialchars($this->request->getVar('nama_lengkap')),
+            'email' => htmlspecialchars($this->request->getVar('email')),
+            'id_kategori' => htmlspecialchars($this->request->getVar('id_kategori')),
+            'tempat_mbkm' => htmlspecialchars($this->request->getVar('tempat_mbkm')),
+        ];
+
+        if ($dataGambar->getError() != 4) {
+            $fileName = $dataGambar->getRandomName();
+            $dataGambar->move('assets/img/profile/', $fileName);
+            $data['gambar'] = $fileName;
+        }
+
+
+        $res = $this->modeluser->update($id, $data);
+        if ($res) {
+            $this->alert->set('success', 'Success', 'Update Success');
+        } else {
+            $this->alert->set('warning', 'Warning', 'Update Failed');
+        }
+        return redirect()->to('profile');
     }
 }

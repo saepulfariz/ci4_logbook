@@ -14,13 +14,23 @@
 ## Login
 
 Role User
+<<<<<<< HEAD
 
+=======
+>>>>>>> 649d8447cc2c209df0a4dcb5f57a632877d41ea8
 1. admin
 2. Mahasiswa
 
 User
+<<<<<<< HEAD
 
 1. role : admin && username : admin && password : 12345678
 2. role : mahasiswa && username : D1A200029 && password : 12345678
 
+=======
+1. role : admin && username : admin && password : 12345678
+2. role : mahasiswa && username : D1A200029 && password : 12345678
+
+
+>>>>>>> 649d8447cc2c209df0a4dcb5f57a632877d41ea8
 # by saepulfariz

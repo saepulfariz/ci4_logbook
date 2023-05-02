@@ -63,7 +63,7 @@ class TbLogbook extends Migration
             ],
         ]);
 
-        $this->forge->addKey('is_logbook', true);
+        $this->forge->addKey('id_logbook', true);
         $this->forge->createTable('tb_logbook');
     }
 

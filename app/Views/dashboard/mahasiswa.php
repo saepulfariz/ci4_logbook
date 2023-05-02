@@ -12,85 +12,7 @@
     <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
 </div>
 
-<!-- Content Row -->
-<div class="row">
 
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-primary shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            Admin</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $admin; ?></div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-users fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-success shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                            Mahasiswa</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $mahasiswa; ?></div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-user-tie fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-info shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Kategori
-                        </div>
-                        <div class="row no-gutters align-items-center">
-                            <div class="col-auto">
-                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?= count($list_kategori); ?></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-tags fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Pending Requests Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-warning shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                            Logbook</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $logbook; ?></div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-sticky-note fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- Content Row -->
 
@@ -101,7 +23,7 @@
         <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Traffic Logbook</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Traffic Word Logbook</h6>
                 <select name="tahun_logbook" class="form-control w-13">
                     <?php foreach ($tahun_logbook as $d) : ?>
                         <option><?= $d['tahun']; ?></option>
@@ -120,38 +42,6 @@
     <!-- Pie Chart -->
     <div class="col-xl-4 col-lg-5">
         <div class="card shadow mb-4">
-            <!-- Card Header - Dropdown -->
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">User Category</h6>
-            </div>
-            <!-- Card Body -->
-            <div class="card-body">
-                <div class="chart-pie pt-4 pb-2">
-                    <canvas id="myPieChart"></canvas>
-                </div>
-                <div class="mt-4 text-center small">
-                    <?php $color_array = ['#4e73df', '#1cc88a', '#36b9cc']; ?>
-                    <?php $i = 0;
-                    foreach ($list_kategori as $d) : ?>
-                        <span class="mr-2">
-                            <i class="fas fa-circle" style="color: <?= $color_array[$i]; ?>"></i> <?= $d['nama_kategori']; ?>
-                        </span>
-                        <?php $i++; ?>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Content Row -->
-<div class="row">
-
-    <!-- Content Column -->
-    <div class="col-lg-6 mb-4">
-
-        <!-- Project Card Example -->
-        <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Top Five Rank</h6>
             </div>
@@ -161,17 +51,16 @@
                 <?php $i = 0;
                 foreach ($top as $d) : ?>
                     <?php $persen = $d['count_word'] * 100 / $topNumber ?>
-                    <h4 class="small font-weight-bold"><?= $d['nama_lengkap']; ?> <span class="float-right"><?= $d['count_word']; ?> Word</span></h4>
+                    <h4 class="small font-weight-bold"><?= ($d['nama_lengkap'] == $nama_lengkap) ? $d['nama_lengkap'] : makeStringAnonymous($d['nama_lengkap'], 2, 2); ?> <span class="float-right"><?= $d['count_word']; ?> Word</span></h4>
                     <div class="progress mb-4">
                         <div class="progress-bar <?= $class_array[$i++]; ?>" role="progressbar" style="width: <?= $persen; ?>%" aria-valuenow="<?= $persen; ?>" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                 <?php endforeach; ?>
             </div>
         </div>
-
-
     </div>
 </div>
+
 <?= $this->endSection('content') ?>
 
 
@@ -299,50 +188,6 @@
                 }
             }
         }
-    });
-
-
-    // Set new default font family and font color to mimic Bootstrap's default styling
-    Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-    Chart.defaults.global.defaultFontColor = '#858796';
-
-    // Pie Chart Example
-    var ctx = document.getElementById("myPieChart");
-    var myPieChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: [
-                <?php foreach ($list_kategori as $d) : ?> '<?= $d['nama_kategori']; ?>',
-                <?php endforeach; ?>
-            ],
-            datasets: [{
-                data: [
-                    <?php foreach ($list_kategori as $d) : ?>
-                        <?= $d['jumlah']; ?>,
-                    <?php endforeach; ?>
-                ],
-                backgroundColor: <?= json_encode($color_array); ?>,
-                hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
-                hoverBorderColor: "rgba(234, 236, 244, 1)",
-            }],
-        },
-        options: {
-            maintainAspectRatio: false,
-            tooltips: {
-                backgroundColor: "rgb(255,255,255)",
-                bodyFontColor: "#858796",
-                borderColor: '#dddfeb',
-                borderWidth: 1,
-                xPadding: 15,
-                yPadding: 15,
-                displayColors: false,
-                caretPadding: 10,
-            },
-            legend: {
-                display: false
-            },
-            cutoutPercentage: 80,
-        },
     });
 </script>
 <?= $this->endSection('script') ?>

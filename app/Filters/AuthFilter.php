@@ -31,6 +31,13 @@ class AuthFilter implements FilterInterface
                 return redirect()->to(base_url('dashboard'));
             }
         }
+
+        if ($segment == 'kategori') {
+            if (session()->get('id_role') == 2) {
+                $alert->set('warning', 'Warning', 'User Not Access');
+                return redirect()->to(base_url('dashboard'));
+            }
+        }
     }
 
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)

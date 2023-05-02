@@ -32,19 +32,25 @@ $segment2 = $request->uri->getSegment(2);
             <span>LogBook</span></a>
     </li>
 
-    <!-- Nav Item - Charts -->
-    <li class="nav-item <?= ($segment == 'user') ? 'active' : ''; ?>">
-        <a class="nav-link" href="<?= base_url(); ?>user">
-            <i class="fas fa-fw fa-users"></i>
-            <span>Kelola User</span></a>
-    </li>
+    <?php if (session()->get('id_role') == 1) : ?>
+
+        <!-- Nav Item - Charts -->
+        <li class="nav-item <?= ($segment == 'user') ? 'active' : ''; ?>">
+            <a class="nav-link" href="<?= base_url(); ?>user">
+                <i class="fas fa-fw fa-users"></i>
+                <span>Kelola User</span></a>
+        </li>
 
 
-    <li class="nav-item <?= ($segment == 'kategori') ? 'active' : ''; ?>">
-        <a class="nav-link" href="<?= base_url(); ?>kategori">
-            <i class="fas fa-fw fa-tags"></i>
-            <span>Kelola Kategori</span></a>
-    </li>
+        <li class="nav-item <?= ($segment == 'kategori') ? 'active' : ''; ?>">
+            <a class="nav-link" href="<?= base_url(); ?>kategori">
+                <i class="fas fa-fw fa-tags"></i>
+                <span>Kelola Kategori</span></a>
+        </li>
+    <?php else : ?>
+
+    <?php endif; ?>
+
 
 
     <!-- Divider -->

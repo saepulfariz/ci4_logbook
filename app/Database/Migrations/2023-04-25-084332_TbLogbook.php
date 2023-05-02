@@ -9,7 +9,7 @@ class TbLogbook extends Migration
     public function up()
     {
         $this->forge->addField([
-            'is_logbook' => [
+            'id_logbook' => [
                 'type'           => 'INT',
                 'constraint'     => 11,
                 'unsigned'       => true,
@@ -44,11 +44,22 @@ class TbLogbook extends Migration
                 'constraint'     => 11,
                 'null' => true
             ],
+            'did' => [
+                'type'           => 'INT',
+                'constraint'     => 11,
+                'null' => true
+            ],
             'created_at' => [
                 'type'           => 'DATETIME',
+                'null' => true
             ],
             'updated_at' => [
                 'type'           => 'DATETIME',
+                'null' => true
+            ],
+            'deleted_at' => [
+                'type'           => 'DATETIME',
+                'null' => true
             ],
         ]);
 

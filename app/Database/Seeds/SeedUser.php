@@ -12,7 +12,7 @@ class SeedUser extends Seeder
             [
                 'username' => 'sistem',
                 'password' => password_hash('12345678', PASSWORD_DEFAULT),
-                'npm' => 'sistem',
+                'npm' => 'sistembot',
                 'email'    => 'sistem@gmail.com',
                 'nama_lengkap'    => 'sistem administrator',
                 'gambar' => 'default.jpg',

@@ -67,7 +67,7 @@ $alert = new App\Libraries\Alert();
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2021</span>
+                        <span>Copyright &copy; Generate Logbook 2023</span>
                     </div>
                 </div>
             </footer>
@@ -117,8 +117,8 @@ $alert = new App\Libraries\Alert();
     <script src="<?= base_url(); ?>assets/vendor/chart.js/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="<?= base_url(); ?>assets/js/demo/chart-area-demo.js"></script>
-    <script src="<?= base_url(); ?>assets/js/demo/chart-pie-demo.js"></script>
+    <!-- <script src="<?= base_url(); ?>assets/js/demo/chart-area-demo.js"></script> -->
+    <!-- <script src="<?= base_url(); ?>assets/js/demo/chart-pie-demo.js"></script> -->
 
     <!-- Page level plugins -->
     <script src="<?= base_url(); ?>assets/vendor/datatables/jquery.dataTables.min.js"></script>

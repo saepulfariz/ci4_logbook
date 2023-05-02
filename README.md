@@ -11,4 +11,16 @@
 7. next **`php spark serve`** for running project
 8. visit http://localhost:8080
 
+## Login
+
+Role User
+
+1. admin
+2. Mahasiswa
+
+User
+
+1. role : admin && username : admin && password : 12345678
+2. role : mahasiswa && username : D1A200029 && password : 12345678
+
 # by saepulfariz

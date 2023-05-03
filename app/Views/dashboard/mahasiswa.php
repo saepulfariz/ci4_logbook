@@ -47,7 +47,7 @@
             </div>
             <div class="card-body">
                 <?php $class_array = ['bg-success', 'bg-info', 'bg-primary', 'bg-warning', 'bg-danger']; ?>
-                <?php $topNumber = $top[0]['count_word']; ?>
+                <?php $topNumber = ($top) ? $top[0]['count_word'] : 100; ?>
                 <?php $i = 0;
                 foreach ($top as $d) : ?>
                     <?php $persen = $d['count_word'] * 100 / $topNumber ?>

@@ -31,7 +31,7 @@ class Dashboard extends BaseController
 
     private function admin()
     {
-        $subQueryKategori = "( SELECT count(id_user) FROM tb_user WHERE id_kategori = tb_logbook_kategori.id_kategori ) as jumlah";
+        $subQueryKategori = "( SELECT count(id_user) FROM tb_user WHERE id_role = 2 AND id_kategori = tb_logbook_kategori.id_kategori ) as jumlah";
         $data = [
             'title' => 'Dashboard Admin',
             'admin' => $this->modeluser->where('id_role', 1)->countAllResults(),

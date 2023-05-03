@@ -117,4 +117,22 @@ class LogbookModel extends Model
         $builder->groupBy('MONTH(created_at)');
         return $builder->get()->getResultArray();
     }
+
+
+    public function exportLogbook($id_user = null)
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select($this->table . '.*');
+        $builder->select('nama_kategori, kode, tempat_mbkm');
+        $builder->join('tb_user', 'tb_user.id_user = tb_logbook.cid', 'left');
+        $builder->join('tb_logbook_kategori', 'tb_logbook_kategori.id_kategori = tb_user.id_kategori');
+
+        if ($id_user != null) {
+            // $id_user = session()->get('id_user');
+            $builder->where('tb_logbook.cid', $id_user);
+        }
+
+
+        return $builder->get()->getResultArray();
+    }
 }

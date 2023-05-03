@@ -57,6 +57,8 @@ $routes->group('', ['filter' => 'authFilter'], function ($routes) {
     $routes->put('profile', 'User::updateProfile');
 
     $routes->get('gantipass', 'User::gantiPass');
+    $routes->get('logbook/export', 'Export::exportLogbook');
+    $routes->get('logbook/export/(:any)', 'Export::exportLogbook/$1');
     $routes->post('gantipass', 'User::prosesGantiPass');
     $routes->get('user/active/(:num)/(:num)', 'User::active/$1/$2');
     $routes->resource('user');

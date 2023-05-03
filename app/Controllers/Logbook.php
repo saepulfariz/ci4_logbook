@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\LogbookModel;
+use App\Models\UserModel;
 use CodeIgniter\RESTful\ResourceController;
 
 class Logbook extends BaseController
@@ -15,25 +16,30 @@ class Logbook extends BaseController
 
     private $title = 'Logbook';
     private $modellogbook;
+    private $modeluser;
     public function __construct()
     {
         $this->modellogbook = new LogbookModel();
+        $this->modeluser = new UserModel();
     }
 
 
     public function index()
     {
         $logbook = '';
+        $mahasiswa = '';
 
         if (session()->get('id_role') == 1) {
             $logbook = $this->modellogbook->select('tb_logbook.*, nama_lengkap as pembuat')->join('tb_user', 'tb_user.id_user = tb_logbook.cid', 'left')->orderBy('id_logbook', 'DESC')->findAll();
+            $mahasiswa = $this->modeluser->findAll();
         } else {
             $logbook = $this->modellogbook->select('tb_logbook.*, nama_lengkap as pembuat')->join('tb_user', 'tb_user.id_user = tb_logbook.cid', 'left')->where('tb_logbook.cid', session()->get('id_user'))->orderBy('id_logbook', 'DESC')->findAll();
         }
 
         $data = [
             'title' => $this->title,
-            'logbook' => $logbook
+            'logbook' => $logbook,
+            'mahasiswa' => $mahasiswa
         ];
 
         return view('logbook/index', $data);
@@ -46,7 +52,7 @@ class Logbook extends BaseController
      */
     public function show($id = null)
     {
-        //
+        return redirect()->to('logbook');
     }
 
     /**

@@ -10,7 +10,7 @@ class SeedLogbookKategori extends Seeder
     {
         $data = [
             [
-                'nama_kategori' => 'PROYEK STUDI/PROYEK INDEPENDEN',
+                'nama_kategori' => 'Proyek studi/proyek independen',
                 'kode' => 'PI-01',
                 'is_pleace' => 0,
                 'cid' => 1,

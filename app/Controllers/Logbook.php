@@ -30,10 +30,10 @@ class Logbook extends BaseController
         $mahasiswa = '';
 
         if (session()->get('id_role') == 1) {
-            $logbook = $this->modellogbook->select('tb_logbook.*, nama_lengkap as pembuat')->join('tb_user', 'tb_user.id_user = tb_logbook.cid', 'left')->orderBy('id_logbook', 'DESC')->findAll();
+            $logbook = $this->modellogbook->select('tb_logbook.*, nama_lengkap as pembuat')->join('tb_user', 'tb_user.id_user = tb_logbook.cid', 'left')->orderBy('tanggal', 'DESC')->findAll();
             $mahasiswa = $this->modeluser->findAll();
         } else {
-            $logbook = $this->modellogbook->select('tb_logbook.*, nama_lengkap as pembuat')->join('tb_user', 'tb_user.id_user = tb_logbook.cid', 'left')->where('tb_logbook.cid', session()->get('id_user'))->orderBy('id_logbook', 'DESC')->findAll();
+            $logbook = $this->modellogbook->select('tb_logbook.*, nama_lengkap as pembuat')->join('tb_user', 'tb_user.id_user = tb_logbook.cid', 'left')->where('tb_logbook.cid', session()->get('id_user'))->orderBy('tanggal', 'DESC')->findAll();
         }
 
         $data = [
@@ -43,6 +43,79 @@ class Logbook extends BaseController
         ];
 
         return view('logbook/index', $data);
+    }
+
+    public function import()
+    {
+        // $rules = [
+        //     'upload_file' => [
+        //         'rules'  => 'required|mime_in[xlsx,csv]',
+        //         'errors' => [
+        //             'required' => 'You must upload file',
+        //             'mime_in' => 'Please Upload XLSX or CSV',
+        //         ],
+        //     ],
+        // ];
+
+        // if (!$this->validate($rules)) {
+        //     $error = '';
+        //     foreach ($this->validator->getErrors() as $key => $value) {
+        //         $error .=  $value . ' ';
+        //     }
+        //     $this->alert->set('warning', 'Warning', $error);
+        //     return redirect()->back()->withInput();
+        // };
+
+
+        $file_mimes = array('text/x-comma-separated-values', 'text/comma-separated-values', 'application/octet-stream', 'application/vnd.ms-excel', 'application/x-csv', 'text/x-csv', 'text/csv', 'application/csv', 'application/excel', 'application/vnd.msexcel', 'text/plain', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        if (isset($_FILES['upload_file']['name']) && in_array($_FILES['upload_file']['type'], $file_mimes)) {
+            $arr_file = explode('.', $_FILES['upload_file']['name']);
+            $extension = end($arr_file);
+            if ('csv' == $extension) {
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+            } else {
+                $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+            }
+
+            $spreadsheet = $reader->load($_FILES['upload_file']['tmp_name']);
+            $sheetData = $spreadsheet->getActiveSheet()->toArray();
+
+            $result = 0;
+            $gagal = 0;
+            $update = 0;
+            $startKolom = 1;
+
+
+            for ($i = $startKolom; $i < count($sheetData); $i++) {
+
+                $tanggal = htmlspecialchars($sheetData[$i][1], true);
+                $mulai = htmlspecialchars($sheetData[$i][2], true);
+                $selesai = htmlspecialchars($sheetData[$i][3], true);
+                $penjelasan = htmlspecialchars($sheetData[$i][4], true);
+
+                $cekTanggal = $this->modellogbook->where('tanggal', $tanggal)->where('cid', session()->get('id_user'))->first();
+
+                $data = [
+                    'tanggal' => $tanggal,
+                    'mulai' => $mulai,
+                    'selesai' => $selesai,
+                    'penjelasan' => $penjelasan,
+                ];
+
+                if ($cekTanggal) {
+                    $id = $cekTanggal['id_logbook'];
+                    $this->modellogbook->update($id, $data);
+                } else {
+                    $this->modellogbook->save($data);
+                }
+                $result++;
+            }
+            $this->alert->set('success', 'Success', 'Import Success ' . $result . ' Rows');
+        } else {
+            $this->alert->set('warning', 'Warning', 'Upload file XLSX or CSV');
+        }
+
+        return redirect()->to('logbook');
     }
 
     /**

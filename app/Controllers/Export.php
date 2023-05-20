@@ -5,6 +5,8 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\LogbookModel;
 use App\Models\UserModel;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class Export extends BaseController
 {
@@ -20,6 +22,115 @@ class Export extends BaseController
     public function index()
     {
         //
+    }
+
+    public function excelLogbook($id_user = null)
+    {
+        if (session()->get('id_role') == 2) {
+            if ($id_user != null) {
+                $this->alert->set('warning', 'Warning', 'NOT VALID');
+                return redirect()->to('logbook');
+            }
+            $id_user = session()->get('id_user');
+        }
+
+        $cekIdUser = $this->modeluser->join('tb_logbook_kategori', 'tb_logbook_kategori.id_kategori = tb_user.id_kategori', 'left')->find($id_user);
+
+        if (!$cekIdUser) {
+            $this->alert->set('warning', 'Warning', 'NOT VALID');
+            return redirect()->to('logbook');
+        }
+
+        if (count($cekIdUser) > 1) {
+            $title = 'LOGBOOK ALL';
+        } else {
+            $title = 'LOGBOOK-' . $cekIdUser['npm'];
+        }
+
+        $dataLogbook = $this->modellogbook->exportLogbook($id_user);
+
+        $spreadsheet = new Spreadsheet();
+
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sheet->setTitle($title);
+
+        $rowLabel = 1;
+
+
+        // set bold
+        $sheet->getStyle('A' . $rowLabel . ':N' . $rowLabel . '')->getFont()->setBold(true);
+
+        // set wrap text
+        $sheet->getStyle('A' . $rowLabel . ':N' . $rowLabel . '')->getAlignment()->setWrapText(true);
+        $sheet->getStyle('A' . $rowLabel . ':N' . $rowLabel . '')->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A' . $rowLabel . ':N' . $rowLabel . '')->getAlignment()->setVertical('center');
+
+        //  biar gak dempet karena autosize
+
+
+        $sheet->setCellValue('A' . $rowLabel, 'NO');
+        $sheet->setCellValue('B' . $rowLabel, 'Date');
+        $sheet->setCellValue('C' . $rowLabel, 'Start');
+        $sheet->setCellValue('D' . $rowLabel, 'End');
+        $sheet->setCellValue('E' . $rowLabel, 'Description');
+        $sheet->setCellValue('F' . $rowLabel, 'Signature');
+        $sheet->setCellValue('G' . $rowLabel, 'User');
+        $sheet->setCellValue('H' . $rowLabel, 'Created At');
+
+        $sheet->getColumnDimension('A')->setAutoSize(true);
+        $sheet->getColumnDimension('B')->setAutoSize(true);
+        $sheet->getColumnDimension('C')->setAutoSize(true);
+        $sheet->getColumnDimension('D')->setAutoSize(true);
+        // $sheet->getColumnDimension('E')->setAutoSize(true);
+        $sheet->getColumnDimension('F')->setAutoSize(true);
+        $sheet->getColumnDimension('G')->setAutoSize(true);
+        $sheet->getColumnDimension('H')->setAutoSize(true);
+        $sheet->getColumnDimension('E')->setWidth(47);
+
+        $rowContent = $rowLabel + 1;
+        $no = 1;
+        foreach ($dataLogbook as $d) {
+            $sheet->setCellValue('A' . $rowContent, $no++);
+            $sheet->setCellValue('B' . $rowContent, $d['tanggal']);
+            $sheet->setCellValue('C' . $rowContent, $d['mulai']);
+            $sheet->setCellValue('D' . $rowContent, $d['selesai']);
+            $sheet->setCellValue('E' . $rowContent, $d['penjelasan']);
+            $sheet->setCellValue('F' . $rowContent, $d['paraf']);
+            $sheet->setCellValue('G' . $rowContent, $d['pembuat']);
+            $sheet->setCellValue('H' . $rowContent, $d['created_at']);
+            // $spreadsheet->getActiveSheet()->getRowDimension(3)->setRowHeight(45);
+            $sheet->getStyle('A' . $rowContent . ':H' . $rowContent . '')->getAlignment()->setVertical('center');
+            $sheet->getStyle('A' . $rowContent . ':H' . $rowContent . '')->getAlignment()->setHorizontal('center');
+            $sheet->getStyle('A' . $rowContent . ':H' . $rowContent . '')->getAlignment()->setWrapText(true);
+            $rowContent++;
+        }
+
+
+        $file_name = $title . '.xlsx';
+
+
+        $writer = new Xlsx($spreadsheet);
+
+        $writer->save($file_name);
+
+        header("Content-Type: application/vnd.ms-excel");
+
+        header('Content-Disposition: attachment; filename="' . basename($file_name) . '"');
+
+        header('Expires: 0');
+
+        header('Cache-Control: must-revalidate');
+
+        header('Pragma: public');
+
+        header('Content-Length:' . filesize($file_name));
+
+        flush();
+
+        readfile($file_name);
+
+        exit;
     }
 
 
@@ -38,6 +149,12 @@ class Export extends BaseController
         if (!$cekIdUser) {
             $this->alert->set('warning', 'Warning', 'NOT VALID');
             return redirect()->to('logbook');
+        }
+
+        if (count($cekIdUser) > 1) {
+            $title = 'LOGBOOK ALL';
+        } else {
+            $title = 'LOGBOOK-' . $cekIdUser['npm'];
         }
 
         $dataLogbook = $this->modellogbook->exportLogbook($id_user);
@@ -216,7 +333,7 @@ class Export extends BaseController
 
 
         // $mpdf->Output(date('Y-m-d-h-i-s') . '.pdf', 'F');
-        $mpdf->Output('LOGBOOK-' . $cekIdUser['npm'] . '.pdf', 'D');
+        $mpdf->Output($title . '.pdf', 'D');
         // $mpdf->Output('filename.pdf', \Mpdf\Output\Destination::FILE);
         // header("Content-type:application/pdf");
         // header('Cache-Control: must-revalidate, post-check=0, pre-check=0');

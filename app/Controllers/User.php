@@ -449,7 +449,6 @@ class User extends BaseController
         $dataOld = $this->modeluser->find($id);
 
         if ($dataOld['email'] != $this->request->getVar('email')) {
-            dd('gak sama');
             $rules['email'] = [
                 'rules'  => 'required|valid_email|is_unique[tb_user.email]',
                 'errors' => [

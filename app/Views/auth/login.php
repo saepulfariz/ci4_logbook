@@ -37,7 +37,7 @@
                                 </div>
                                 <div class="form-group">
                                     <input type="password" class="form-control form-control-user <?= (validation_show_error('password', 'my_single')) ? 'border-danger text-danger' : ''; ?>" id="password" name="password" placeholder="Password">
-                                    <?= (validation_show_error('password')) ? "<small class='text-danger pl-3'>" . validation_show_error('password') . "</small>" : ""; ?>
+                                    <?= validation_show_error('password', 'my_single'); ?>
                                 </div>
                                 <div class="form-group">
                                     <div class="custom-control custom-checkbox small">

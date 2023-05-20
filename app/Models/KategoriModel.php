@@ -53,10 +53,7 @@ class KategoriModel extends Model
 
     protected function beforeInsert(array $data)
     {
-        // if (isset($data['data']['cid'])) {
-        // }
         $data['data']['cid'] = session()->get('id_user');
-        $data['data']['uid'] = session()->get('id_user');
         return $data;
     }
 

@@ -56,10 +56,7 @@ class LogbookModel extends Model
 
     protected function beforeInsert(array $data)
     {
-        // if (isset($data['data']['cid'])) {
-        // }
         $data['data']['cid'] = session()->get('id_user');
-        $data['data']['uid'] = session()->get('id_user');
         return $data;
     }
 
@@ -122,7 +119,7 @@ class LogbookModel extends Model
     public function exportLogbook($id_user = null)
     {
         $builder = $this->db->table($this->table);
-        $builder->select($this->table . '.*');
+        $builder->select($this->table . '.*, nama_lengkap as pembuat');
         $builder->select('nama_kategori, kode, tempat_mbkm');
         $builder->join('tb_user', 'tb_user.id_user = tb_logbook.cid', 'left');
         $builder->join('tb_logbook_kategori', 'tb_logbook_kategori.id_kategori = tb_user.id_kategori');

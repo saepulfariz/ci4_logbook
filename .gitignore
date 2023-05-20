@@ -126,3 +126,6 @@ _modules/*
 /.phpunit.*.cache
 
 composer.lock
+
+/LOGBOOK-*.xlsx
+/LOGBOOK-*.pdf
